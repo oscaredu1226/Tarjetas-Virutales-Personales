@@ -40,4 +40,25 @@ describe('Ricardo public profile actions', () => {
     fixture.destroy();
     vi.useRealTimers();
   });
+
+  it('opens the QR in a large dialog and closes it from its control', () => {
+    const fixture = TestBed.configureTestingModule({
+      imports: [PublicProfilePage],
+      providers: [provideIcons(appIcons)],
+    }).createComponent(PublicProfilePage);
+    fixture.detectChanges();
+
+    const trigger = fixture.nativeElement.querySelector('.rc-qr') as HTMLButtonElement;
+    trigger.click();
+    fixture.detectChanges();
+
+    const dialog = fixture.nativeElement.querySelector('.rc-qr-dialog-panel') as HTMLElement;
+    expect(dialog).not.toBeNull();
+    expect(dialog.querySelector('.rc-qr-large')).not.toBeNull();
+
+    (dialog.querySelector('.rc-qr-close') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.rc-qr-dialog-panel')).toBeNull();
+    fixture.destroy();
+  });
 });

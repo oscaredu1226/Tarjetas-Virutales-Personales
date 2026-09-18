@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, HostListener, OnDestroy, signal } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { buildVCard } from '../../digital-card/domain/vcard';
 import {
@@ -142,12 +142,49 @@ import { QrCodeComponent } from '../../../shared/ui/qr-code.component';
       </article>
 
       <div class="rc-share">
-        <div class="rc-qr"><app-qr-code [value]="publicUrl" /></div>
+        <button
+          #qrTrigger
+          class="rc-qr"
+          type="button"
+          (click)="openQr(qrTrigger)"
+          aria-label="Ampliar codigo QR para compartir la tarjeta"
+          title="Ampliar codigo QR"
+        >
+          <app-qr-code [value]="publicUrl" />
+        </button>
         <div><strong>Tarjeta digital de Ricardo Lanatta Forger</strong><span>Escanea o comparte este enlace.</span></div>
         <button type="button" (click)="copyUrl()"><ng-icon name="lucideCopy" />{{ copyStatus() === 'copied' ? 'Enlace copiado' : copyStatus() === 'error' ? 'No se pudo copiar' : 'Copiar enlace' }}</button>
       </div>
       <footer class="rc-footer"><strong>CIBERSEGURIDAD.pe</strong><span>Gestores de tu seguridad</span></footer>
     </main>
+
+    @if (qrExpanded()) {
+      <div class="rc-qr-dialog" role="presentation" (click)="closeQr()">
+        <section
+          class="rc-qr-dialog-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="qr-dialog-title"
+          (click)="$event.stopPropagation()"
+        >
+          <button class="rc-qr-close" type="button" (click)="closeQr()" aria-label="Cerrar codigo QR" title="Cerrar">
+            <ng-icon name="lucideX" aria-hidden="true" />
+          </button>
+          <div class="rc-qr-dialog-heading">
+            <ng-icon name="lucideQrCode" aria-hidden="true" />
+            <div>
+              <h2 id="qr-dialog-title">Compartir tarjeta digital</h2>
+              <p>Escanea este código con la cámara del celular.</p>
+            </div>
+          </div>
+          <div class="rc-qr-large"><app-qr-code [value]="publicUrl" /></div>
+          <button class="rc-qr-copy" type="button" (click)="copyUrl()">
+            <ng-icon name="lucideCopy" aria-hidden="true" />
+            {{ copyStatus() === 'copied' ? 'Enlace copiado' : copyStatus() === 'error' ? 'No se pudo copiar' : 'Copiar enlace' }}
+          </button>
+        </section>
+      </div>
+    }
   `,
 })
 export class PublicProfilePage implements AfterViewInit, OnDestroy {
@@ -161,9 +198,11 @@ export class PublicProfilePage implements AfterViewInit, OnDestroy {
   readonly whatsappHref = `https://wa.me/${(this.profile.whatsapp ?? '').replace(/\D/g, '')}`;
   readonly publicUrl = `${window.location.origin}/${RICARDO_CARD_PATH}`;
   readonly copyStatus = signal<'idle' | 'copied' | 'error'>('idle');
+  readonly qrExpanded = signal(false);
   readonly loading = signal(true);
   readonly loaderLeaving = signal(false);
   private destroyed = false;
+  private qrTrigger?: HTMLButtonElement;
 
   ngAfterViewInit(): void {
     document.documentElement.classList.add('rc-loading');
@@ -173,6 +212,24 @@ export class PublicProfilePage implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed = true;
     document.documentElement.classList.remove('rc-loading');
+    document.documentElement.classList.remove('rc-qr-open');
+  }
+
+  @HostListener('document:keydown.escape')
+  closeQr(): void {
+    if (!this.qrExpanded()) {
+      return;
+    }
+
+    this.qrExpanded.set(false);
+    document.documentElement.classList.remove('rc-qr-open');
+    setTimeout(() => this.qrTrigger?.focus());
+  }
+
+  openQr(trigger: HTMLButtonElement): void {
+    this.qrTrigger = trigger;
+    this.qrExpanded.set(true);
+    document.documentElement.classList.add('rc-qr-open');
   }
 
   downloadVCard(): void {

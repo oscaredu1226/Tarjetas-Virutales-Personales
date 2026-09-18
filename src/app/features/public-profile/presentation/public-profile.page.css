@@ -56,7 +56,9 @@
 }
 
 html.rc-loading,
-html.rc-loading body {
+html.rc-loading body,
+html.rc-qr-open,
+html.rc-qr-open body {
   overflow: hidden;
 }
 
@@ -494,12 +496,115 @@ html.rc-loading body {
   border-radius: 7px;
   background: rgb(255 255 255 / 92%);
 }
-.rc-qr { width: 112px; height: 112px; overflow: hidden; flex: 0 0 auto; }
+.rc-share .rc-qr {
+  position: relative;
+  display: block;
+  width: 112px;
+  height: 112px;
+  min-height: 0;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #c8dff2;
+  border-radius: 7px;
+  background: #fff;
+  cursor: zoom-in;
+}
 .rc-qr .qr-image { width: 112px; }
+.rc-share .rc-qr:hover { background: #fff; border-color: #55a9eb; box-shadow: 0 5px 16px rgb(14 92 166 / 14%); }
+.rc-share .rc-qr:focus-visible { outline: 3px solid rgb(19 145 225 / 28%); outline-offset: 3px; }
 .rc-share > div:nth-child(2) { display: grid; gap: 2px; min-width: 0; }
 .rc-share strong { font-size: .83rem; }
 .rc-share span { color: #607b9b; font-size: .75rem; }
 .rc-share button { margin-left: auto; white-space: nowrap; }
+
+.rc-qr-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(2 18 38 / 76%);
+  backdrop-filter: blur(6px);
+  animation: rc-qr-backdrop-in 180ms ease-out;
+}
+
+.rc-qr-dialog-panel {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  width: min(100%, 430px);
+  padding: 24px;
+  border: 1px solid rgb(172 216 249 / 75%);
+  border-radius: 8px;
+  background: #f8fcff url('/assets/branding/panel-background.png') center / cover no-repeat;
+  box-shadow: 0 24px 70px rgb(0 15 35 / 38%);
+  animation: rc-qr-panel-in 220ms ease-out;
+}
+
+.rc-qr-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #c7ddf1;
+  border-radius: 50%;
+  color: #174d82;
+  background: rgb(255 255 255 / 88%);
+  cursor: pointer;
+}
+
+.rc-qr-close:hover { color: #075eb9; background: #eaf6ff; }
+.rc-qr-close:focus-visible,
+.rc-qr-copy:focus-visible { outline: 3px solid rgb(19 145 225 / 28%); outline-offset: 3px; }
+
+.rc-qr-dialog-heading {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding-right: 38px;
+}
+.rc-qr-dialog-heading > ng-icon { color: #0875d1; font-size: 1.8rem; }
+.rc-qr-dialog-heading h2 { margin: 0; color: #082b55; font-size: 1.05rem; font-weight: 700; }
+.rc-qr-dialog-heading p { margin: 3px 0 0; color: #527292; font-size: .78rem; }
+
+.rc-qr-large {
+  width: min(76vw, 320px);
+  aspect-ratio: 1;
+  margin: 22px 0 18px;
+  overflow: hidden;
+  border: 8px solid #fff;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgb(10 76 135 / 16%);
+}
+.rc-qr-large .qr-image { display: block; width: 100%; height: 100%; }
+
+.rc-qr-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 9px 18px;
+  border: 0;
+  border-radius: 6px;
+  color: #fff;
+  background: linear-gradient(110deg, #159de9, #075ddd);
+  cursor: pointer;
+  font-size: .82rem;
+  font-weight: 650;
+  box-shadow: 0 7px 18px rgb(7 96 197 / 20%);
+}
+.rc-qr-copy:hover { filter: brightness(1.04); }
 .rc-footer {
   display: flex;
   justify-content: space-between;
@@ -558,6 +663,15 @@ html.rc-loading body {
   .rc-share button { grid-column: 1 / -1; margin-left: 0; }
 }
 
+@media (max-width: 480px) {
+  .rc-qr-dialog { padding: 12px; }
+  .rc-qr-dialog-panel { padding: 20px 16px 18px; }
+  .rc-qr-dialog-heading { padding-right: 34px; }
+  .rc-qr-dialog-heading h2 { font-size: .98rem; }
+  .rc-qr-large { width: min(82vw, 310px); margin-top: 18px; }
+  .rc-qr-copy { width: 100%; }
+}
+
 @media (max-width: 350px) {
   .rc-action { grid-template-columns: 24px minmax(0, 1fr); }
   .rc-chevron { position: absolute; visibility: hidden; }
@@ -571,7 +685,9 @@ html.rc-loading body {
   }
 
   .rc-loader-content img,
-  .rc-loader-track span {
+  .rc-loader-track span,
+  .rc-qr-dialog,
+  .rc-qr-dialog-panel {
     animation: none;
   }
 
@@ -588,4 +704,12 @@ html.rc-loading body {
 @keyframes rc-loader-progress {
   from { transform: translateX(-120%); }
   to { transform: translateX(340%); }
+}
+
+@keyframes rc-qr-backdrop-in {
+  from { opacity: 0; }
+}
+
+@keyframes rc-qr-panel-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
 }
