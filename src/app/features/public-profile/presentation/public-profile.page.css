@@ -1,0 +1,493 @@
+.rc-page {
+  min-height: 100dvh;
+  padding: 22px clamp(14px, 3vw, 42px) 18px;
+  background: #eef6ff url('/assets/branding/panel-background.png') center top / cover fixed no-repeat;
+  color: #0b294f;
+}
+
+.rc-showcase {
+  max-width: 1500px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid #cee3fa;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 18px 56px rgb(11 52 104 / 12%);
+}
+
+.rc-hero {
+  padding: 28px clamp(22px, 3.2vw, 48px) 36px;
+  color: #fff;
+  background: linear-gradient(90deg, rgb(3 19 39 / 19%), rgb(3 19 39 / 8%)), url('/assets/branding/card-preview-background.png') center / cover no-repeat;
+}
+
+.rc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  min-height: 104px;
+  margin-bottom: 16px;
+}
+
+.rc-logo {
+  display: block;
+  width: min(100%, 340px);
+  height: 130px;
+  object-fit: contain;
+  object-position: left center;
+  filter: brightness(0) invert(1);
+}
+
+.rc-motto {
+  max-width: 340px;
+  padding-left: 23px;
+  border-left: 2px solid #2dc2ff;
+  color: #c3eaff;
+  font-size: 1.35rem;
+  font-style: italic;
+  line-height: 1.25;
+}
+
+.rc-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(190px, .67fr) minmax(290px, 1.05fr) minmax(360px, 1.48fr);
+  align-items: start;
+  gap: clamp(20px, 2.2vw, 36px);
+}
+
+.rc-portrait-column {
+  min-width: 0;
+}
+
+.rc-portrait {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 260px);
+  aspect-ratio: 1;
+  margin: 0 auto 22px;
+  overflow: visible;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f5faff, #bdcfe4);
+  box-shadow: 0 0 0 2px #42b7ff, 0 0 30px rgb(13 148 255 / 48%);
+}
+
+.rc-portrait img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.rc-portrait > ng-icon {
+  color: #7891ab;
+  font-size: clamp(5.5rem, 10vw, 9rem);
+}
+
+.rc-availability {
+  position: absolute;
+  right: 11%;
+  bottom: 3%;
+  width: 25px;
+  aspect-ratio: 1;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #14b972;
+}
+
+.rc-credential {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 66px;
+  padding: 10px 12px;
+  border: 1px solid #3195d7;
+  border-radius: 7px;
+  background: rgb(5 38 73 / 76%);
+  color: #e2f7ff;
+  font-size: .79rem;
+  line-height: 1.35;
+}
+
+.rc-credential ng-icon {
+  color: #72caff;
+  font-size: 2rem;
+}
+
+.rc-credential strong {
+  color: #fff;
+  font-size: .89rem;
+}
+
+.rc-focus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 17px;
+  padding-top: 14px;
+  border-top: 1px solid rgb(103 198 255 / 35%);
+  color: #c3e4fb;
+  font-size: .59rem;
+  white-space: nowrap;
+}
+
+.rc-focus b {
+  width: 1px;
+  height: 11px;
+  background: #42c7ff;
+}
+
+.rc-identity {
+  min-width: 0;
+  padding-top: 8px;
+}
+
+.rc-identity h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.13;
+  overflow-wrap: anywhere;
+}
+
+.rc-role {
+  margin-top: 9px;
+  color: #77d4ff;
+  font-size: 1.28rem;
+  font-weight: 600;
+}
+
+.rc-company {
+  margin-top: 5px;
+  color: #fff;
+  font-size: 1.02rem;
+}
+
+.rc-contact-list {
+  display: grid;
+  gap: 13px;
+  margin: 19px 0 0;
+  padding: 18px 0 0;
+  border-top: 1px solid #36aeef;
+  list-style: none;
+}
+
+.rc-contact-list li {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  color: #edf8ff;
+  font-size: .9rem;
+  line-height: 1.3;
+}
+
+.rc-contact-list ng-icon {
+  color: #91d8ff;
+  font-size: 1.16rem;
+}
+
+.rc-contact-list a,
+.rc-contact-list span {
+  overflow-wrap: anywhere;
+}
+
+.rc-contact-list a:hover,
+.rc-video-link:hover {
+  color: #83d7ff;
+  text-decoration: underline;
+}
+
+.rc-bio {
+  margin-top: 19px;
+  color: #b8d3ea;
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+.rc-media {
+  min-width: 0;
+  padding-top: 8px;
+  text-align: center;
+}
+
+.rc-video-frame {
+  overflow: hidden;
+  border: 1px solid #75bbeb;
+  border-radius: 8px;
+  background: #061b32;
+  box-shadow: 0 12px 30px rgb(0 0 0 / 22%);
+}
+
+.rc-video-frame video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.rc-media p {
+  margin-top: 12px;
+  color: #aee4ff;
+  font-size: .94rem;
+}
+
+.rc-video-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  color: #d5f0ff;
+  font-size: .79rem;
+}
+
+.rc-actions {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 11px;
+  padding: 19px clamp(18px, 2.5vw, 36px);
+  background: linear-gradient(180deg, #fff, #f2f8ff);
+}
+
+.rc-action {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 9px;
+  min-height: 77px;
+  padding: 12px 13px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: #fff;
+  box-shadow: 0 7px 18px rgb(14 84 159 / 12%);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
+}
+
+.rc-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgb(14 84 159 / 18%);
+  filter: brightness(1.05);
+}
+
+.rc-action > ng-icon:first-child {
+  font-size: 1.7rem;
+}
+
+.rc-action span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.rc-action strong {
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.rc-action small {
+  color: inherit;
+  font-size: .77rem;
+  font-weight: 400;
+  opacity: .9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rc-chevron {
+  font-size: 1.1rem;
+}
+
+.rc-action-whatsapp { background: linear-gradient(125deg, #1fc578, #078c62); }
+.rc-action-blue { background: linear-gradient(125deg, #258dea, #0753b7); }
+.rc-action-linkedin { background: linear-gradient(125deg, #2586d2, #0a66c2); }
+.rc-action-light {
+  border-color: #bcdbf8;
+  color: #0e4289;
+  background: linear-gradient(135deg, #fff, #e9f4ff);
+}
+
+.rc-lower {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(270px, .8fr);
+  gap: 28px;
+  padding: 22px clamp(22px, 3vw, 42px) 28px;
+  border-top: 1px solid #dceafa;
+  background: #fff;
+}
+
+.rc-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.rc-eyebrow {
+  color: #3773aa;
+  font-size: .66rem;
+  font-weight: 750;
+}
+
+.rc-lower h2 {
+  margin-top: 4px;
+  font-size: 1.12rem;
+  font-weight: 700;
+}
+
+.rc-share button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 7px 12px;
+  border: 1px solid #b6d5f2;
+  border-radius: 6px;
+  color: #0758b7;
+  background: #f4faff;
+  cursor: pointer;
+  font-size: .81rem;
+  font-weight: 650;
+}
+
+.rc-share button:hover,
+.rc-file-actions a:hover {
+  background: #e3f2ff;
+}
+
+.rc-files {
+  border-top: 1px solid #e0ebf7;
+}
+
+.rc-file {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 65px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0ebf7;
+}
+
+.rc-file > ng-icon {
+  color: #1268c9;
+  font-size: 1.45rem;
+}
+
+.rc-file-copy { display: grid; gap: 3px; min-width: 0; }
+.rc-file-copy strong { font-size: .86rem; font-weight: 650; }
+.rc-file-copy span { color: #607b9b; font-size: .75rem; }
+.rc-file-actions { display: flex; gap: 5px; }
+.rc-file-actions a {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #d2e4f5;
+  border-radius: 6px;
+  color: #0e5fb9;
+}
+
+.rc-connect { display: grid; align-content: start; gap: 8px; }
+.rc-connect h2 { margin: -4px 0 3px; }
+.rc-connect a {
+  display: grid;
+  grid-template-columns: 22px 1fr 16px;
+  align-items: center;
+  gap: 10px;
+  min-height: 45px;
+  border-bottom: 1px solid #e0ebf7;
+  color: #114c91;
+  font-size: .86rem;
+  font-weight: 600;
+}
+.rc-connect a:hover { color: #0477d8; }
+
+.rc-share {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  max-width: 1500px;
+  margin: 14px auto 0;
+  padding: 10px 16px;
+  border: 1px solid #d5e7f7;
+  border-radius: 7px;
+  background: rgb(255 255 255 / 92%);
+}
+.rc-qr { width: 112px; height: 112px; overflow: hidden; flex: 0 0 auto; }
+.rc-qr .qr-image { width: 112px; }
+.rc-share > div:nth-child(2) { display: grid; gap: 2px; min-width: 0; }
+.rc-share strong { font-size: .83rem; }
+.rc-share span { color: #607b9b; font-size: .75rem; }
+.rc-share button { margin-left: auto; white-space: nowrap; }
+.rc-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 1500px;
+  margin: 12px auto 0;
+  color: #27557f;
+  font-size: .72rem;
+}
+.rc-footer span { color: #55799a; }
+
+@media (max-width: 1130px) {
+  .rc-hero-grid { grid-template-columns: 180px minmax(0, 1fr); }
+  .rc-portrait { width: 178px; }
+  .rc-media { grid-column: 1 / -1; max-width: 670px; width: 100%; margin: 0 auto; }
+  .rc-video-frame video { aspect-ratio: 16 / 9; }
+  .rc-credential { font-size: .7rem; }
+  .rc-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rc-action-linkedin { grid-column: 1 / -1; }
+}
+
+@media (max-width: 700px) {
+  .rc-page { padding: 0 0 14px; background-attachment: scroll; }
+  .rc-showcase { border: 0; border-radius: 0; }
+  .rc-hero { padding: 16px 18px 24px; background-position: 70% center; }
+  .rc-header { display: grid; justify-items: center; gap: 4px; margin-bottom: 18px; }
+  .rc-logo { width: min(100%, 260px); height: 112px; object-position: center; }
+  .rc-motto { padding: 0; border: 0; text-align: center; font-size: .93rem; }
+  .rc-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .rc-portrait { width: 176px; margin-bottom: 17px; }
+  .rc-portrait > ng-icon { font-size: 6rem; }
+  .rc-credential { max-width: 270px; margin: 0 auto; }
+  .rc-focus { max-width: 270px; margin-inline: auto; }
+  .rc-identity { padding: 0; text-align: center; }
+  .rc-identity h1 { font-size: 1.74rem; }
+  .rc-role { font-size: 1.13rem; }
+  .rc-contact-list { max-width: 470px; margin-inline: auto; text-align: left; }
+  .rc-bio { max-width: 520px; margin-inline: auto; }
+  .rc-media { grid-column: auto; }
+  .rc-actions { gap: 9px; padding: 15px; }
+  .rc-action { min-height: 69px; padding: 9px 10px; grid-template-columns: 24px minmax(0, 1fr) 15px; gap: 6px; }
+  .rc-action > ng-icon:first-child { font-size: 1.4rem; }
+  .rc-chevron { font-size: .9rem; }
+  .rc-action strong { font-size: .88rem; }
+  .rc-action small { font-size: .69rem; }
+  .rc-lower { grid-template-columns: minmax(0, 1fr); gap: 26px; padding: 20px 18px 28px; }
+  .rc-share { margin-inline: 12px; }
+  .rc-footer { margin-inline: 16px; }
+}
+
+@media (max-width: 390px) {
+  .rc-action small { display: none; }
+  .rc-file { grid-template-columns: 24px minmax(0, 1fr); }
+  .rc-file-actions { grid-column: 2; }
+  .rc-share { display: grid; grid-template-columns: 112px minmax(0, 1fr); }
+  .rc-share button { grid-column: 1 / -1; margin-left: 0; }
+}
+
+@media (max-width: 350px) {
+  .rc-action { grid-template-columns: 24px minmax(0, 1fr); }
+  .rc-chevron { position: absolute; visibility: hidden; }
+}
