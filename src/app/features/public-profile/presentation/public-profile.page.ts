@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, signal } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { buildVCard } from '../../digital-card/domain/vcard';
 import {
@@ -13,7 +13,23 @@ import { QrCodeComponent } from '../../../shared/ui/qr-code.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgIcon, QrCodeComponent],
   template: `
-    <main class="rc-page">
+    @if (loading()) {
+      <div class="rc-loader" [class.rc-loader-leaving]="loaderLeaving()" role="status" aria-live="polite">
+        <div class="rc-loader-content">
+          <img src="/assets/branding/ciberseguridad-logo-sidebar.png" alt="" />
+          <p>Preparando tarjeta digital</p>
+          <div class="rc-loader-track" aria-hidden="true"><span></span></div>
+        </div>
+      </div>
+    }
+
+    <main
+      class="rc-page"
+      [class.rc-page-revealing]="loaderLeaving()"
+      [class.rc-page-ready]="!loading()"
+      [attr.aria-hidden]="loading() ? 'true' : null"
+      [attr.inert]="loading() ? '' : null"
+    >
       <article class="rc-showcase" aria-labelledby="ricardo-name">
         <div class="rc-hero">
           <header class="rc-header">
@@ -134,7 +150,7 @@ import { QrCodeComponent } from '../../../shared/ui/qr-code.component';
     </main>
   `,
 })
-export class PublicProfilePage {
+export class PublicProfilePage implements AfterViewInit, OnDestroy {
   readonly profile = ricardoProfile;
   readonly attachments = ricardoAttachments;
   readonly videoUrl = ricardoVideoUrl;
@@ -145,6 +161,19 @@ export class PublicProfilePage {
   readonly whatsappHref = `https://wa.me/${(this.profile.whatsapp ?? '').replace(/\D/g, '')}`;
   readonly publicUrl = `${window.location.origin}/${RICARDO_CARD_PATH}`;
   readonly copyStatus = signal<'idle' | 'copied' | 'error'>('idle');
+  readonly loading = signal(true);
+  readonly loaderLeaving = signal(false);
+  private destroyed = false;
+
+  ngAfterViewInit(): void {
+    document.documentElement.classList.add('rc-loading');
+    void this.prepareCard();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed = true;
+    document.documentElement.classList.remove('rc-loading');
+  }
 
   downloadVCard(): void {
     const blob = new Blob([buildVCard(this.profile)], { type: 'text/vcard;charset=utf-8' });
@@ -188,4 +217,50 @@ export class PublicProfilePage {
       field.remove();
     }
   }
+
+  private async prepareCard(): Promise<void> {
+    const criticalAssets = [
+      '/assets/branding/panel-background.png',
+      '/assets/branding/card-preview-background.png',
+      '/assets/branding/ciberseguridad-logo-sidebar.png',
+      '/assets/ricardo/video-poster.jpg',
+    ];
+
+    await Promise.all([
+      delay(750),
+      Promise.race([
+        Promise.all(criticalAssets.map((asset) => preloadImage(asset))),
+        delay(3500),
+      ]),
+    ]);
+
+    if (this.destroyed) {
+      return;
+    }
+
+    this.loaderLeaving.set(true);
+    await delay(420);
+
+    if (!this.destroyed) {
+      this.loading.set(false);
+      document.documentElement.classList.remove('rc-loading');
+    }
+  }
+}
+
+function preloadImage(source: string): Promise<void> {
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.onload = () => resolve();
+    image.onerror = () => resolve();
+    image.src = source;
+
+    if (image.complete) {
+      resolve();
+    }
+  });
+}
+
+function delay(duration: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, duration));
 }

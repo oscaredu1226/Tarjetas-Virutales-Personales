@@ -20,5 +20,24 @@ describe('Ricardo public profile actions', () => {
     const linkedIn = fixture.nativeElement.querySelector('.rc-action-linkedin') as HTMLAnchorElement;
     expect(linkedIn.href).toBe('https://www.linkedin.com/company/ciberseguridad-pe');
     expect(linkedIn.querySelector('ng-icon[name="bootstrapLinkedin"]')).not.toBeNull();
+    fixture.destroy();
+  });
+
+  it('hides the loading screen after critical assets or the safety timeout', async () => {
+    vi.useFakeTimers();
+    const fixture = TestBed.configureTestingModule({
+      imports: [PublicProfilePage],
+      providers: [provideIcons(appIcons)],
+    }).createComponent(PublicProfilePage);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.rc-loader')).not.toBeNull();
+    await vi.advanceTimersByTimeAsync(4000);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.loading()).toBe(false);
+    expect(fixture.nativeElement.querySelector('.rc-loader')).toBeNull();
+    fixture.destroy();
+    vi.useRealTimers();
   });
 });

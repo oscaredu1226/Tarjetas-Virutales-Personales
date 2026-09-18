@@ -1,8 +1,79 @@
+.rc-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: 24px;
+  background: #f5faff url('/assets/branding/panel-background.png') center / cover no-repeat;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 420ms ease, visibility 420ms ease;
+}
+
+.rc-loader-leaving {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.rc-loader-content {
+  display: grid;
+  justify-items: center;
+  width: min(82vw, 390px);
+  color: #315f8f;
+  text-align: center;
+}
+
+.rc-loader-content img {
+  display: block;
+  width: min(100%, 350px);
+  height: auto;
+  animation: rc-loader-breathe 1800ms ease-in-out infinite;
+}
+
+.rc-loader-content p {
+  margin: 18px 0 13px;
+  font-size: .82rem;
+  font-weight: 600;
+}
+
+.rc-loader-track {
+  width: min(100%, 250px);
+  height: 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #d8eaf9;
+}
+
+.rc-loader-track span {
+  display: block;
+  width: 42%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #0874d1, #20bfff);
+  animation: rc-loader-progress 1250ms ease-in-out infinite;
+}
+
+html.rc-loading,
+html.rc-loading body {
+  overflow: hidden;
+}
+
 .rc-page {
   min-height: 100dvh;
   padding: 22px clamp(14px, 3vw, 42px) 18px;
   background: #eef6ff url('/assets/branding/panel-background.png') center top / cover fixed no-repeat;
   color: #0b294f;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.rc-page-revealing,
+.rc-page-ready {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 520ms ease, transform 520ms ease;
 }
 
 .rc-showcase {
@@ -454,9 +525,9 @@
   .rc-page { padding: 0 0 14px; background-attachment: scroll; }
   .rc-showcase { border: 0; border-radius: 0; }
   .rc-hero { padding: 16px 18px 24px; background-position: 70% center; }
-  .rc-header { display: grid; justify-items: center; gap: 4px; margin-bottom: 18px; }
-  .rc-logo { width: min(100%, 260px); height: 112px; object-position: center; }
-  .rc-motto { padding: 0; border: 0; text-align: center; font-size: .93rem; }
+  .rc-header { display: grid; justify-content: stretch; justify-items: center; width: 100%; gap: 4px; margin-bottom: 18px; }
+  .rc-logo { justify-self: center; width: min(100%, 260px); height: 112px; object-position: center; }
+  .rc-motto { justify-self: center; width: min(100%, 280px); padding: 0; border: 0; text-align: center; font-size: .93rem; }
   .rc-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; }
   .rc-portrait { width: 176px; margin-bottom: 17px; }
   .rc-portrait > ng-icon { font-size: 6rem; }
@@ -490,4 +561,31 @@
 @media (max-width: 350px) {
   .rc-action { grid-template-columns: 24px minmax(0, 1fr); }
   .rc-chevron { position: absolute; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-loader,
+  .rc-page-revealing,
+  .rc-page-ready {
+    transition-duration: 1ms;
+  }
+
+  .rc-loader-content img,
+  .rc-loader-track span {
+    animation: none;
+  }
+
+  .rc-loader-track span {
+    width: 100%;
+  }
+}
+
+@keyframes rc-loader-breathe {
+  0%, 100% { opacity: .82; transform: scale(.985); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes rc-loader-progress {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(340%); }
 }
