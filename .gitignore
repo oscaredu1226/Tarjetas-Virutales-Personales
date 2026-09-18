@@ -39,6 +39,10 @@ testem.log
 /typings
 __screenshots__/
 
+# Keep internal notes out of the deployment repository
+*.md
+!/README.md
+
 # Environment and secrets
 .env*
 !.env.example

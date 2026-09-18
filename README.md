@@ -1,59 +1,95 @@
-# TarjetaPersonal
+# CIBERSEGURIDAD.pe Digital Cards
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+Aplicacion Angular para identidad profesional digital vinculada a URL publica, codigo QR y tarjeta fisica NFC.
 
-## Development server
+## Estado del proyecto
 
-To start a local development server, run:
+- Angular 22 con componentes standalone y rutas lazy.
+- La prueba de campo muestra la tarjeta publica de Ricardo Lanatta Forger en `/p/ricardo-lanatta-forger`.
+- Por ahora cualquier otra ruta redirige a esa tarjeta. El panel y la administracion permanecen en el codigo, pero no estan habilitados ni conectados a autenticacion real.
+- Los datos de la tarjeta viven en `src/app/features/public-profile/data/ricardo-card.data.ts`; cambiar el contenido no requiere cambiar su URL publica.
+- Supabase Auth, PostgreSQL, RLS, Storage y RPC son la arquitectura prevista, no servicios activos de esta tarjeta estatica.
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Ejecucion
 
 ```bash
-ng generate component component-name
+npm ci
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Build y pruebas:
 
 ```bash
-ng generate --help
+npm run build
+npm run test
 ```
 
-## Building
+## Variables
 
-To build the project run:
+`.env.example` documenta las variables previstas para la futura integracion. La tarjeta estatica actual no necesita copiarlas ni configurarlas.
 
-```bash
-ng build
+```text
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+PUBLIC_BASE_URL=https://ciberseguridad.com.pe
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+El archivo `.env.example` es una plantilla para la futura integracion; la compilacion actual no lee `.env` automaticamente. No subas credenciales ni uses `service_role` en Angular.
 
-## Running unit tests
+## Ruta publica
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- `/p/ricardo-lanatta-forger`: destino permanente del QR y la tarjeta NFC de prueba.
+- `**`: redireccion a la ruta publica anterior.
 
-```bash
-ng test
+El numero, correo, web, PDF y video publicados en `public/assets/ricardo/` son accesibles a cualquier visitante. No coloques recursos privados en `public/`.
+
+## Despliegue estatico
+
+Ejecuta `npm run build` y publica `dist/TarjetaPersonal/browser`. Configura el hosting para servir `index.html` en las rutas de la SPA, sin reemplazar las respuestas de los archivos de `assets/`. Asi se puede abrir directamente la URL publica y funciona el enlace del QR.
+
+## Arquitectura
+
+La aplicacion usa DDD pragmatico por bounded context:
+
+```text
+src/app/
+  core/
+  shared/
+  features/
+    digital-card/
+      domain/
+      application/
+      infrastructure/
+    dashboard/
+    identity/
+    profile/
+    contacts/
+    social-links/
+    custom-links/
+    appearance/
+    nfc-cards/
+    leads/
+    administration/
+    public-profile/
 ```
 
-## Running end-to-end tests
+`digital-card/domain` no depende de Angular ni Supabase. Ahi viven reglas como `toPublicProfile` y `buildVCard`.
 
-For end-to-end (e2e) testing, run:
+## Supabase
 
-```bash
-ng e2e
-```
+La migracion inicial esta en `supabase/migrations/202609140001_initial_identity_cards.sql`. No se aplica al publicar la tarjeta estatica.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Incluye tablas de perfiles, redes, enlaces, tarjetas NFC, contactos recibidos, roles, auditoria, constraints, indices, RLS, bucket privado y la RPC `get_public_profile(public_code)`.
 
-## Additional Resources
+La RPC publica devuelve solo campos permitidos por flags de visibilidad y solo enlaces visibles. El frontend publico no debe hacer `select *` sobre `profiles`.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Seguridad
+
+- Guards de autenticacion y rol preparados para el panel futuro; no protegen una API desplegada en este MVP.
+- Validacion de esquemas de URL en frontend.
+- vCard construida desde `PublicProfile`, no desde `Profile` privado.
+- `.env`, `.env.local` y variantes locales ignoradas por Git.
+- RLS para lectura/escritura por propietario y administracion por rol.
+- Constraints de formato para email, colores y URLs.
+
+Pendiente antes de habilitar el panel en produccion: conectar Supabase Auth real, sustituir el adapter demo, mover operaciones privilegiadas a Edge Functions, generar `public_code` no enumerable y servir imagenes desde Storage con signed URLs o estrategia equivalente.
