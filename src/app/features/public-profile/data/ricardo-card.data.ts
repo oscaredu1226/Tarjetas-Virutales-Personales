@@ -18,7 +18,7 @@ export const ricardoProfile: PublicProfile = {
   lastName: 'Lanatta Forger',
   jobTitle: 'Gerente General',
   companyName: 'CIBERSEGURIDAD.pe',
-  profilePhotoUrl: '',
+  profilePhotoUrl: '/assets/ricardo/ricardo-lanatta-forger.jpg',
   coverImageUrl: '/assets/branding/card-preview-background.png',
   phone: '+51 998 441 992',
   email: 'rlanattaf@ciberseguridad.com.pe',

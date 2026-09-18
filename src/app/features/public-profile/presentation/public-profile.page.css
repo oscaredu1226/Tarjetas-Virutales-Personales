@@ -147,11 +147,20 @@ html.rc-qr-open body {
   box-shadow: 0 0 0 2px #42b7ff, 0 0 30px rgb(13 148 255 / 48%);
 }
 
+.rc-portrait-photo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
 .rc-portrait img {
+  display: block;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   object-fit: cover;
+  transform: scale(1.14);
+  transform-origin: center 40%;
 }
 
 .rc-portrait > ng-icon {

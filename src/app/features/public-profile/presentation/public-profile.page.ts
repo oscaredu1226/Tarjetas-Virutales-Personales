@@ -39,9 +39,11 @@ import { QrCodeComponent } from '../../../shared/ui/qr-code.component';
 
           <div class="rc-hero-grid">
             <div class="rc-portrait-column">
-              <div class="rc-portrait" aria-label="Foto de Ricardo pendiente">
+              <div class="rc-portrait" aria-label="Foto de Ricardo Lanatta Forger">
                 @if (profile.profilePhotoUrl) {
-                  <img [src]="profile.profilePhotoUrl" alt="Ricardo Lanatta Forger" />
+                  <span class="rc-portrait-photo">
+                    <img [src]="profile.profilePhotoUrl" alt="Ricardo Lanatta Forger" />
+                  </span>
                 } @else {
                   <ng-icon name="lucideUserRound" aria-hidden="true" />
                 }
@@ -280,6 +282,7 @@ export class PublicProfilePage implements AfterViewInit, OnDestroy {
       '/assets/branding/panel-background.png',
       '/assets/branding/card-preview-background.png',
       '/assets/branding/ciberseguridad-logo-sidebar.png',
+      '/assets/ricardo/ricardo-lanatta-forger.jpg',
       '/assets/ricardo/video-poster.jpg',
     ];
 
